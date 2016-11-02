@@ -1,0 +1,54 @@
+%h1 Job Applicant Report
+-if @jobs.length > 0
+	%table
+		%thead
+			%tr
+				%th Job
+				%th Applicant Name
+				%th Email Address
+				%th Website
+				%th Skills
+				%th Cover Letter Paragraph
+		%tbody
+			-jobs_index = 0
+			-@jobs.each do |job|
+				-first_row_of_job = true
+				-job.applicants.each do |applicant|
+					-first_row_of_applicant = true
+					-applicant.skills.each do |skill|
+						%tr
+							-if first_row_of_job == true
+								-row_count = @counts[jobs_index]
+								-jobs_index += 1
+								-first_row_of_job = false
+								%td{rowspan: row_count}= job.name
+							-if first_row_of_applicant == true
+								-row_count = applicant.skills.length
+								%td{rowspan: row_count}= applicant.name
+								%td{rowspan: row_count}
+									%a{href: "mailto:#{applicant.email}"}= applicant.email
+								%td{rowspan: row_count}
+									%a{href: "https://wwww.#{applicant.website}"}= applicant.website
+								%td{rowspan: 1}= skill.name
+								%td{rowspan: row_count}
+									%p= applicant.cover_letter
+								-first_row_of_applicant = false
+							-else
+								%td{rowspan: 1}= skill.name
+-else
+	%h3 No data to display
+	%h4 Use rake task: add_json_data to upload .json files
+
+
+
+
+
+
+
+
+
+
+
+
+
+
