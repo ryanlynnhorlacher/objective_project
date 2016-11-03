@@ -40,3 +40,6 @@
 								-first_row_of_applicant = false
 							-else
 								%td{rowspan: 1}= skill.name
+-else
+	%h3 No data to display
+	%h4 Run rake add_json_data to seed database with a JSON dataset
