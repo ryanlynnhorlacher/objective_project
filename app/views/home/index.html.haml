@@ -10,45 +10,33 @@
 				%th Skills
 				%th Cover Letter Paragraph
 		%tbody
-			-jobs_index = 0
-			-@jobs.each do |job|
+			-@jobs.each_with_index do |job, index|
 				-first_row_of_job = true
+				-if job.applicants.length == 0 
+					%tr
+						%td= job.name
+						%td No applicants
 				-job.applicants.each do |applicant|
 					-first_row_of_applicant = true
-					-applicant.skills.each do |skill|
+					-applicant.skills.length == 0 ? skills_loop = 1 : skills_loop = applicant.skills.length
+					-skills = applicant.skills
+					-skills_loop.times do |i|
+						-skill = skills[i]
 						%tr
-							-if first_row_of_job == true
-								-row_count = @counts[jobs_index]
-								-jobs_index += 1
+							-if first_row_of_job 
+								-row_count = job.skills.length
 								-first_row_of_job = false
-								%td{rowspan: row_count}= job.name
-							-if first_row_of_applicant == true
+								%td{rowspan: @job_rowspans[index]}= job.name
+							-if first_row_of_applicant
 								-row_count = applicant.skills.length
 								%td{rowspan: row_count}= applicant.name
 								%td{rowspan: row_count}
 									%a{href: "mailto:#{applicant.email}"}= applicant.email
 								%td{rowspan: row_count}
 									%a{href: "https://wwww.#{applicant.website}"}= applicant.website
-								%td{rowspan: 1}= skill.name
+								%td= skill.blank? ? "None listed" : skill.name
 								%td{rowspan: row_count}
 									%p= applicant.cover_letter
 								-first_row_of_applicant = false
 							-else
 								%td{rowspan: 1}= skill.name
--else
-	%h3 No data to display
-	%h4 Use rake task: add_json_data to upload .json files
-
-
-
-
-
-
-
-
-
-
-
-
-
-

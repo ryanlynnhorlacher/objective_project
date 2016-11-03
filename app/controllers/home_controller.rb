@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 
   def index
   	@jobs = Job.all
-  	@counts = Job.skills_per_job
+  	@job_rowspans = Job.calc_job_rowspans
   end
 
 end

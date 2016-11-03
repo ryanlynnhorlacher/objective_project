@@ -1,17 +1,19 @@
 class Job < ApplicationRecord
 	has_many :applicants
+	has_many :skills, through: :applicants
 
-	def self.skills_per_job
-		skills_per_job = []
+	def self.calc_job_rowspans
+		job_rowspans = []
+		job_rowspan = 0
 		Job.all.each do |job|
-			counter = 0
+			job_rowspan += job.skills.length
 			job.applicants.each do |applicant|
-				applicant.skills.each do
-					counter += 1
+				if applicant.skills.length == 0
+					job_rowspan += 1
 				end
 			end
-			skills_per_job << counter
+			job_rowspans << job_rowspan
 		end
-		skills_per_job
+		job_rowspans
 	end
 end
